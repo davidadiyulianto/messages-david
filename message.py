@@ -210,10 +210,6 @@ def filterURL (list):
                         if (temp[-1:]=="."):
                             temp=temp[:-1]
                         print (temp)
-                        # ---transform bad url---
-                        # print(("temp = {}").format(temp))
-                        # temp = correcting(temp)
-
                         # --- numbers and IP rules ---
                         if (not temp2.isdigit() or (re.match(ipSearch,temp))): #not all number
                             print ("a")
@@ -223,6 +219,7 @@ def filterURL (list):
                                     print("c")
                                     if (temp[:3] != 'inv') and (temp[:3] != 'pym') and (temp[:3] != 'com'):
                                         print ("d")
+                                        # ---transform bad url---
                                         temp=correcting(temp)
                                         if (temp):
                                             output.append(temp)
