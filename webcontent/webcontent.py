@@ -96,19 +96,19 @@ def findIcon(soup):
 
 # In[162]:
 
-def webContent(url):
+def main():
     soup = opening(url)
     
     tokopediaFound=False
     topedCSS=False
     
-# --- find tokopedia string in html ---
+    # --- find tokopedia string in html ---
     tokopediaString = findTokopedia(soup)
     if tokopediaString:
         print("found tokopedia in html string")
         tokopediaFound=True
 
-# --- find CSS ---
+    # --- find CSS ---
     CSS = findCss(soup)
     for i in CSS:
         try:
@@ -119,32 +119,27 @@ def webContent(url):
         except:
             pass
 
-# --- find button ---
+    # --- find button ---
     button = findButton(soup)
     print (button)
     
-# --- find links ---
+    # --- find links ---
     links = findLink(soup)
     print (links)
     
-# --- find images ---  
+    # --- find images ---  
     images = findImage(soup)
     for i in images:
         print (i['alt'] + " = " + i['src'])
         
-# --- find icons ---
+    # --- find icons ---
     icon = findIcon(soup)
     for i in icon:
         print (i)
 
-# --- find input fields ---
+    # --- find input fields ---
     inputField = findInputField(soup)
     print (inputField)
     
-#     return tokopediaFound
-
-
-# In[163]:
-
-webContent(url)
-
+if __name__=="__main__":
+    main()
