@@ -8,7 +8,7 @@ from urlparse import urlparse,urlunparse
 from bs4 import BeautifulSoup
 from collections import Counter
 import pandas as pd
-import db_common as db
+# import db_common as db
 import urllib as url
 import datetime as dt
 import urllib2
@@ -21,6 +21,12 @@ import csv
 import re
 
 
+# --- Regular Expression ---
+ipSearch = re.compile(r'[0-2][0-5][0-5]\.[0-2][0-5][0-5]\.[0-2][0-5][0-5]\.[0-2][0-5][0-5]')
+searcher = re.compile(r'(^|\W)(?!(https?:\/\/)?(\S+\.)*tokopedia\.com)((\S+(\.\S+)+)|(\S+([^a-z0-9\s\.]\S+)+))(\s|$)')
+dotCatcher = re.compile(r'[{]dot[}]|[(]dot[)]|[\[]dot[\]]|([^a-zA-Z0-9])dot\1',re.IGNORECASE)
+isAlpha = re.compile(r'[A-Za-z]+')
+multOcc = re.compile(r'[\,\<\>\?\.\!\@\#\$\%\^\&\*\(\)\_\-\+\=\;\:\'\"\ ]{2,}')
 
 # --- get yesterday date ---
 def yersterdayDate():
@@ -116,7 +122,6 @@ def domainValidation(list):
 def domainValidation2(list):
     final=[]
     original=[]
-    ipSearch = re.compile(r'[0-2][0-5][0-5]\.[0-2][0-5][0-5]\.[0-2][0-5][0-5]\.[0-2][0-5][0-5]')
     for url in list:
         if (re.match(ipSearch,url)):
             response=os.system("ping -n 1 " + url)
@@ -138,7 +143,6 @@ def domainValidation2(list):
 
 # --- CORRECTING BAD URL ---
 def correcting(url):
-    ipSearch = re.compile(r'[0-2][0-5][0-5]\.[0-2][0-5][0-5]\.[0-2][0-5][0-5]\.[0-2][0-5][0-5]')
     array=[]
     containsDot=False
     
@@ -184,16 +188,14 @@ def filterURL (list):
     output=[]
     seen=[]
     counter=1
-    searcher = re.compile(r'(^|\W)(?!(https?:\/\/)?(\S+\.)*tokopedia\.com)((\S+(\.\S+)+)|(\S+([^a-z0-9\s\.]\S+)+))(\s|$)')
-    ipSearch = re.compile(r'[0-2][0-5][0-5]\.[0-2][0-5][0-5]\.[0-2][0-5][0-5]\.[0-2][0-5][0-5]')
-    isAlpha = re.compile(r'[A-Za-z]+')
     for msgOri in list.msg_reply:
         # messages1=msgOri
         messages1 = re.sub('[^A-Za-z0-9\.,:*/_&=\-?]+', ' ', msgOri)
-        messages1 = re.sub('(\.{2,})'," ",messages1)
-        messages1 = re.sub('(\?{2,})'," ",messages1)
-        messages1 = messages1.replace(" dot ",".")
-        messages1 = messages1.replace("(dot)",".")
+        messages1 = re.sub(multOcc," ",messages1)
+        # messages1 = re.sub('(\?{2,})'," ",messages1)
+        messages1 = re.sub(dotCatcher,".",messages1)
+        # messages1 = messages1.replace(" dot ",".")
+        # messages1 = messages1.replace("(dot)",".")
         messages1 = messages1.replace("dotcom ",".com ")
         messages1 = messages1.lower()
         messages1 = searcher.findall(messages1)
@@ -279,17 +281,17 @@ def main():
 
     # 1. QUERY!!!!! UNCOMMENT TO RUN
 
-    msg_unique = query(yesterday)
+    # msg_unique = query(yesterday)
 
     
     # 2. get query dummy
 
     # -----------------------------------------
-    # fileRead = 'sample_msg.csv' # sample 20-04-2016
-    # # -----------------------------------------
+    fileRead = 'sample_msg.csv' # sample 20-04-2016
+    # -----------------------------------------
     
     # # fileRead = 'msg_2016-04-30.csv'
-    # msg_unique=pd.read_csv(fileRead) #only for test
+    msg_unique=pd.read_csv(fileRead) #only for test
 
 
     # BEGIN PROCESS:
