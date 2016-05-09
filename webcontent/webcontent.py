@@ -103,12 +103,14 @@ def main():
     topedCSS=False
     
     # --- find tokopedia string in html ---
+    print ("1. Checkin tokopedia string in the page html")
     tokopediaString = findTokopedia(soup)
     if tokopediaString:
         print("found tokopedia in html string")
         tokopediaFound=True
 
     # --- find CSS ---
+    print ("2. Checking all CSS in the page")
     CSS = findCss(soup)
     for i in CSS:
         try:
@@ -120,24 +122,29 @@ def main():
             pass
 
     # --- find button ---
+    print ("3. Checking all buttons in the page")
     button = findButton(soup)
     print (button)
     
     # --- find links ---
+    print ("4. Checking all links in the page")
     links = findLink(soup)
     print (links)
     
     # --- find images ---  
+    print ("5. Checking all images in the page")
     images = findImage(soup)
     for i in images:
         print (i['alt'] + " = " + i['src'])
         
     # --- find icons ---
+    print ("6. Checking all icons in the page")
     icon = findIcon(soup)
     for i in icon:
         print (i)
 
     # --- find input fields ---
+    print ("7. Checking all input fields in the page")
     inputField = findInputField(soup)
     print (inputField)
     
