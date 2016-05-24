@@ -27,7 +27,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer, Ha
 from sklearn.grid_search import GridSearchCV
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.preprocessing import scale, label_binarize
-from sklearn.svm import LinearSVC, LinearSVR
+from sklearn.svm import LinearSVC, LinearSVR, SVC
 from sklearn.externals import joblib 
 
 from sklearn.base import TransformerMixin, BaseEstimator
@@ -123,3 +123,9 @@ def preprocess_input(line):
     if line is None:
         line = ""
     return " ".join(filter(lambda x: x in string.printable, line).split())
+
+def clean_words(x,array):
+    x=str(x.lower())
+    words = x.split()
+    words = [x for x in words if x in array]
+    return(" ".join(words).lower())
